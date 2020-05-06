@@ -6,10 +6,6 @@ Motor motor1(3, 2, 6, STEPS, 1.8, 1 / 4.f);
 Motor motor2(4, 5, 7, STEPS, 1.8, 1 / 4.f);
 Joystic joystic(A0, A1);
 
-float speed = 1.0f;
-unsigned long stepsPerRevolution = 360.f / (1.8f * 0.5f);
-unsigned long delay_time = (long)(1E6 / (stepsPerRevolution * speed));
-
 void setup() {
     // initialize digital pin 13 as an output.
     motor1.setup();
@@ -18,8 +14,6 @@ void setup() {
     motor1.setSpeed(0.5f);
     motor2.setSpeed(0.5f);
     Serial.begin(9600);
-    //motor1.setRotation(135);
-    //motor2.setRotation(135);
 }
 
 // the loop function runs over and over again forever
