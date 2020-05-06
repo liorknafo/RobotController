@@ -36,22 +36,4 @@ void loop() {
 
     motor1.setRotation(x * 90);
     motor2.setRotation(y * 90);
-
-
-    /*digitalWrite(3, HIGH);
-    digitalWrite(4, HIGH);
-    delayMicroseconds(300);
-    digitalWrite(3, LOW);
-    digitalWrite(4, LOW);
-    delayMicroseconds(300);*/
-    //Serial.println(delay_time);
-
-    /*unsigned long now = micros();
-    if (now - lastTimeHigh > delay_time) {
-        lastTimeHigh = now;
-        digitalWrite(2, HIGH);
-    }
-    else if (now - lastTimeHigh > delay_time / 2) {
-        digitalWrite(2, LOW);
-    }*/
 }
