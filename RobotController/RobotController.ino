@@ -22,8 +22,6 @@ void setup() {
     //motor2.setRotation(135);
 }
 
-unsigned long lastTimeHigh = 0;
-
 // the loop function runs over and over again forever
 void loop() {
     motor1.loop();
