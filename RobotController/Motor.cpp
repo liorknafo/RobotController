@@ -120,7 +120,7 @@ void Motor::doSteps() {
 	bool dir = calcDirection();
 	setDir(dir);
 
-	unsigned long stepPeriodmicroSec = 10000;// (1E6 / (rotationSpeed * stepsPerRotation));
+	unsigned long stepPeriodmicroSec = (1E6 / (rotationSpeed * stepsPerRotation));
 	if (doPulse(stepPeriodmicroSec)) {
 		rotation += (dir ? -1 : 1) * stepSize * motorAngle;
 		rotation = normalize_angle(rotation);

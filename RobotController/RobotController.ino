@@ -2,8 +2,8 @@
 #include "Joystic.h"
 #include "Motor.h"
 
-Motor motor1(2, 3, 6, STEPS);
-Motor motor2(4, 5, 7, STEPS);
+Motor motor1(3, 2, 6, STEPS, 1.8, 1 / 4.f);
+Motor motor2(4, 5, 7, STEPS, 1.8, 1 / 4.f);
 Joystic joystic(A0, A1);
 
 void setup() {
@@ -11,10 +11,9 @@ void setup() {
     motor1.setup();
     motor2.setup();
 
-    motor1.setSpeed(0.75f);
-    motor2.setSpeed(0.75f);
+    motor1.setSpeed(0.5f);
+    motor2.setSpeed(0.5f);
     Serial.begin(9600);
-    //motor1.setRotation(135);
 }
 
 // the loop function runs over and over again forever
