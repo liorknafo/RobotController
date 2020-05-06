@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+/.vs/*
+/ArduinoTestingGround/Debug
+/ArduinoTestingGround/x64/Debug
+/ArduinoTestingGround
+/RobotController/Debug
+/RobotController/__vm
+/x64/Debug
