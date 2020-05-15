@@ -22,6 +22,10 @@ public:
     void setRotation(float rotation);
     void setDir(bool reverse);
 
+    float getRotation() const;
+    float getSpeed() const;
+    bool isIdle();
+
     void setup();
     void loop();
 
@@ -32,24 +36,23 @@ private:
     void enableMotor();
     bool doPulse(unsigned long stepPeriodmicroSec);
 
-    float calcAngleDis(float angle1, float angle2);
-    float normalize_angle(float angle);
-    bool calcDirection();
+    float calcAngleDis(float angle1, float angle2) const;
+    float normalize_angle(float angle) const;
+    bool calcDirection() const;
 
     int pulsePin, dirPin, enablePin;
     
     const MotorMode motorMode;
-    float rotation, desiredRotation;
+    float rotation, desiredRotation, rotationSpeed;
     
     const int stepsPerRotation;
     const float stepSize, motorAngle;
-    float rotationSpeed;
     
     bool dirValue;
     bool pulseValue;
+    bool isMotorIdle;
     unsigned long lastIdleTime;
     unsigned long lastHighTime;
-    bool isMotorIdle;
 };
 
 #endif

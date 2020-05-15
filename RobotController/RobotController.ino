@@ -2,8 +2,11 @@
 #include "Joystic.h"
 #include "Motor.h"
 
-Motor motor1(2, 3, 6, STEPS);
-Motor motor2(4, 5, 7, STEPS);
+float stepSize = 1.8f;
+float motorAngle = 1 / 32.f;
+
+Motor motor1(3, 2, 6, CONTINUOUS, stepSize, motorAngle);
+Motor motor2(4, 5, 7, CONTINUOUS, stepSize, motorAngle);
 Joystic joystic(A0, A1);
 
 void setup() {
@@ -14,8 +17,13 @@ void setup() {
     motor1.setSpeed(0.75f);
     motor2.setSpeed(0.75f);
     Serial.begin(9600);
-    //motor1.setRotation(135);
 }
+
+int state_motor1 = 0;
+int state_motor2 = 0;
+
+unsigned long stopTime1 = 0;
+unsigned long stopTime2 = 0;
 
 // the loop function runs over and over again forever
 void loop() {
@@ -24,9 +32,7 @@ void loop() {
 
     float x = joystic.getX();
     float y = joystic.getY();
-    x = abs(x) < 0.1 ? 0 : x;
-    y = abs(y) < 0.1 ? 0 : y;
 
-    motor1.setRotation(x * 90);
-    motor2.setRotation(y * 90);
+    motor1.
+
 }

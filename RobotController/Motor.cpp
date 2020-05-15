@@ -13,7 +13,7 @@ Motor::Motor(int pulsePin, int dirPin, int enablePin, MotorMode motorMode, float
 	this->rotation = 0;
 	this->desiredRotation = 0;
 	this->rotationSpeed = 0;
-	this->dirValue = false;
+	this->dirValue = true;
 	
 	this->lastIdleTime = 0;
 	this->lastHighTime = 0;
@@ -24,7 +24,7 @@ void Motor::setSpeed(float rotationSpeed) {
 	this->rotationSpeed = rotationSpeed;
 }
 
-float Motor::normalize_angle(float angle) {
+float Motor::normalize_angle(float angle) const {
 	if (angle > 360) {
 		return angle - 360;
 	}
@@ -34,8 +34,8 @@ float Motor::normalize_angle(float angle) {
 	return angle;
 }
 
-void Motor::setRotation(float rotation) {
-	this->desiredRotation = normalize_angle(rotation);
+void Motor::setRotation(float desiredRotation) {
+	this->desiredRotation = normalize_angle(desiredRotation);
 }
 
 void Motor::setup() {
@@ -44,7 +44,7 @@ void Motor::setup() {
 	pinMode(enablePin, OUTPUT);
 }
 
-bool Motor::calcDirection() {
+bool Motor::calcDirection() const {
 	float x_desired = cos(desiredRotation * PI / 180.f);
 	float y_desired = sin(desiredRotation * PI / 180.f);
 	float x_now = cos(rotation * PI / 180.f);
@@ -78,7 +78,22 @@ void Motor::setDir(bool reverse) {
 	delay(100);
 }
 
-float Motor::calcAngleDis(float angle1, float angle2) {
+float Motor::getRotation() const
+{
+	return rotation;
+}
+
+float Motor::getSpeed() const
+{
+	return rotationSpeed;
+}
+
+bool Motor::isIdle()
+{
+	return isMotorIdle;
+}
+
+float Motor::calcAngleDis(float angle1, float angle2) const {
 	float delta = angle1 - angle2;
 	delta = abs(delta);
 	if (delta > 180.f)
@@ -106,7 +121,7 @@ bool Motor::doPulse(unsigned long stepPeriodmicroSec) {
 void Motor::doSteps() {
 	if (calcAngleDis(desiredRotation, rotation) < stepSize * motorAngle)
 	{
-		desiredRotation = rotation;
+		//desiredRotation = rotation;
 		disableMotor();
 		return;
 	}
@@ -114,6 +129,12 @@ void Motor::doSteps() {
 	{
 		disableMotor();
 		return;
+	}
+	if (isMotorIdle) {
+		if (calcAngleDis(desiredRotation, rotation) < stepSize * motorAngle * 10) {
+			disableMotor();
+			return;
+		}
 	}
 	enableMotor();
 	
