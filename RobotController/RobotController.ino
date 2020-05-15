@@ -33,6 +33,4 @@ void loop() {
     float x = joystic.getX();
     float y = joystic.getY();
 
-    motor1.
-
 }
