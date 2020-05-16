@@ -43,9 +43,13 @@ void loop() {
 
     if (millis() - lastCheck > 100) {
         lastCheck = millis();
-        float x = joystic.getX();
-        float y = joystic.getY();
-        handle_motor(x, motor1);
-        handle_motor(y, motor2);
+        if (Serial.available() > 0) {
+            String xdata = Serial.readStringUntil(' ');
+            int x = xdata.toInt();
+            String ydata = Serial.readString();
+            int y = ydata.toInt();
+            motor1.move(x);
+            motor2.move(y);
+        }
     }
 }
