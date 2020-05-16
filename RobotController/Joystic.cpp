@@ -9,10 +9,10 @@ Joystic::Joystic(int xPin, int yPin) {
     this->yPin = yPin;
 }
 float Joystic::getX() {
-    return (min(analogRead(xPin), 1024) - 512) / 512.f;
+    return (analogRead(xPin) - 512) / 512.f;
 }
 float Joystic::getY() {
-    return (min(analogRead(yPin), 1024) - 512) / 512.f;
+    return (analogRead(yPin) - 512) / 512.f;
 }
 void Joystic::steup() {
     pinMode(xPin, INPUT);

@@ -9,50 +9,52 @@
 	#include "WProgram.h"
 #endif
 
-enum MotorMode {
-    CONTINUOUS,
-    STEPS
-};
 
 class Motor {
 public:
-    Motor(int pulsePin, int dirPin, int enablePin, MotorMode motorMode = STEPS, float stepSize = 1.8f, float motorAngle = 1.f);
+    Motor(int pulsePin, int dirPin, int enablePin, float stepSize = 1.8f, float motorAngle = 1.f);
 
     void setSpeed(float rotationSpeed);
-    void setRotation(float rotation);
-    void setDir(bool reverse);
-
-    float getRotation() const;
     float getSpeed() const;
+
     bool isIdle();
 
-    void setup();
-    void loop();
+    virtual void setup();
+    virtual void loop() = 0;
 
 private:
-    void doSteps();
-    void doContinuous();
-    void disableMotor();
-    void enableMotor();
-    bool doPulse(unsigned long stepPeriodmicroSec);
-
-    float calcAngleDis(float angle1, float angle2) const;
-    float normalize_angle(float angle) const;
-    bool calcDirection() const;
+    unsigned long lastIdleTime;
+    unsigned long lastHighTime;
 
     int pulsePin, dirPin, enablePin;
     
-    const MotorMode motorMode;
-    float rotation, desiredRotation, rotationSpeed;
-    
-    const int stepsPerRotation;
-    const float stepSize, motorAngle;
+    float rotationSpeed;
     
     bool dirValue;
     bool pulseValue;
     bool isMotorIdle;
-    unsigned long lastIdleTime;
-    unsigned long lastHighTime;
+
+protected:
+    bool doPulse(unsigned long stepPeriodmicroSec);
+    void disableMotor();
+    void enableMotor();
+    void setDir(bool);
+
+    const int stepsPerRotation;
+    const float stepSize, motorAngle;
+};
+
+
+class MotorSteps : public Motor {
+public:
+    MotorSteps(int pulsePin, int dirPin, int enablePin, float stepSize = 1.8f, float motorAngle = 1.f);
+
+    void move(float angle);
+
+    virtual void loop() override;
+
+//private:
+    int steps_to_go;
 };
 
 #endif

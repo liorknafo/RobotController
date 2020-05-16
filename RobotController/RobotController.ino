@@ -5,8 +5,8 @@
 float stepSize = 1.8f;
 float motorAngle = 1 / 32.f;
 
-Motor motor1(3, 2, 6, CONTINUOUS, stepSize, motorAngle);
-Motor motor2(4, 5, 7, CONTINUOUS, stepSize, motorAngle);
+MotorSteps motor1(3, 2, 6, stepSize, motorAngle);
+MotorSteps motor2(4, 5, 7, stepSize, motorAngle);
 Joystic joystic(A0, A1);
 
 void setup() {
@@ -14,23 +14,38 @@ void setup() {
     motor1.setup();
     motor2.setup();
 
-    motor1.setSpeed(0.75f);
-    motor2.setSpeed(0.75f);
+    motor1.setSpeed(0.25f);
+    motor2.setSpeed(0.25f);
     Serial.begin(9600);
 }
 
-int state_motor1 = 0;
-int state_motor2 = 0;
+float calc_dir(float jInput) {
+    if (abs(jInput) < 0.1)
+        return 0;
+    return jInput / abs(jInput);
+}
 
-unsigned long stopTime1 = 0;
-unsigned long stopTime2 = 0;
+void handle_motor(float jInput, MotorSteps& motor) {
+    float dir = calc_dir(jInput);
+    
+    if (dir == 0) {
+        motor.move(0);
+        return;
+    }
+    motor.move(20 * dir);
+}
 
+unsigned long lastCheck = 1;
 // the loop function runs over and over again forever
 void loop() {
     motor1.loop();
     motor2.loop();
 
-    float x = joystic.getX();
-    float y = joystic.getY();
-
+    if (millis() - lastCheck > 100) {
+        lastCheck = millis();
+        float x = joystic.getX();
+        float y = joystic.getY();
+        handle_motor(x, motor1);
+        handle_motor(y, motor2);
+    }
 }
